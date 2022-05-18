@@ -36,6 +36,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class);
-        super.configure(http);
+
+        http    .authorizeRequests()
+                    .antMatchers("/h2-console/**").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
+                .headers()
+                    .frameOptions().disable()
+                    .and()
+                .formLogin()
+                    .permitAll()
+                    .and()
+                .logout()
+                    .permitAll()
+                    .and()
+                .csrf().disable();
     }
 }
