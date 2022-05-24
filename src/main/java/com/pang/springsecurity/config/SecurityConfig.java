@@ -29,7 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
     }
 
     @Override
@@ -38,8 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class);
 
         http    .authorizeRequests()
-                    .antMatchers("/h2-console/**").permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                     .and()
                 .headers()
                     .frameOptions().disable()
@@ -50,6 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                     .permitAll()
                     .and()
-                .csrf().disable();
+                .csrf().ignoringAntMatchers("/h2-console/**");
     }
 }
